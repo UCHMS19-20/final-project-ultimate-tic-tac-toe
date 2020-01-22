@@ -56,7 +56,7 @@ def NextBox(Ccords,TotalGrid):
     else:
         return((Ccords[0]%3)*3,(Ccords[1]%3)*3)
 
-#Determineinga winner        
+#Determining a winner        
 def SetWin(Grid,Team,TotalGrid):
     #for three in a row
     for x in range(amtrow):
@@ -66,3 +66,34 @@ def SetWin(Grid,Team,TotalGrid):
     for x in TotalGrid:
         for y in x:
             y = Team
+
+#Winner of a set
+def winSetter(OC,Team,Grid,TotalGrid):
+    TotalGrid[OC[0]//3][OC[1]//3] = Team
+    for x in range((OC[0]//3) * 3,(OC[0]//3) *3 + 3):
+        for y in range((OC[1]//3) * 3,(OC[1]//3) *3 + 3):
+            grid[x][y] = Team
+    #when win is detected in individual box set for x team
+    for x in range(0,3):
+        if TotalGrid[x][0] == Team and TotalGrid[x][1] == Team and TotalGrid[x][2] == Team:
+            print("Win detected on",x)
+            if Team == 1:
+                SetWin(Grid,1,TotalGrid)
+            else:
+                SetWin(Grid,2,TotalGrid)
+    #when win is detected in individual box set for y team
+    for y in range(0,3):
+        if TotalGrid[0][y] == Team and TotalGrid[1][y] == Team and TotalGrid[2][y] == Team:
+            print("Win detected on ",y)
+            if Team == 1:
+                SetWin(Grid,1,TotalGrid)
+            else:
+                SetWin(Grid,2,TotalGrid)
+    #when a winner is detected in the entire grid
+    if (TotalGrid[0][0] ==Team and TotalGrid[1][1] == Team and TotalGrid[2][2] == Team) or (TotalGrid[2][0] == Team and TotalGrid[1][1] == Team and TotalGrid[0][2] == Team ):
+        print("Win here detected")
+        if Team == 1:
+            SetWin(Grid,1,TotalGrid)
+        else:
+            SetWin(Grid,2,TotalGrid)
+    print(TotalGrid)
