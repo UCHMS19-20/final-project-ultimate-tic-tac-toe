@@ -196,3 +196,103 @@ for row in range(amtrow):
 
 #prints game
 print(grid)
+
+#initializes g ame
+pygame.init()
+
+#screen size of window
+WINDOW_SIZE = [totxsize, totysize]
+screen = pygame.display.set_mode(WINDOW_SIZE)
+
+#title of game
+pygame.display.set_caption("Ulimate Tic tac toe")
+
+allowedx = -1
+allowedy = -1
+playablex = MARGIN
+playabley = MARGIN
+playsizex = (3*WIDTH + 4*MARGIN)*3
+playsizey = (3*HEIGHT + 4*MARGIN)*3
+playrect = [playablex,playabley,playsizex,playsizex]
+playwidth = int(WIDTH//20)
+if playwidth == 0:
+    playwidth = 1
+done = False
+redPlaying = True
+clock = pygame.time.Clock()
+tot3by3 = (3*WIDTH+MARGIN)
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        elif event.type == pygame.K_q:
+            print ("hiii")
+            done = True
+        #determines where the click is placed and which OC the computer should move to next
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            xcord = ((pos[0] - ((pos[0]//tot3by3)-1)*MARGIN) - 2*MARGIN) // (MARGIN+WIDTH)
+            ycord = ((pos[1] - ((pos[1]//tot3by3)-1)*MARGIN) - 2*MARGIN)// (MARGIN+HEIGHT)
+            print("Click ", pos, "Grid coordinates: ", xcord, ycord , "Inner cords",xcord%3,ycord%3)
+            if xcord /8 <= 1 and ycord /8 <= 1:
+                #where to click when there is nothing on the board yet
+                if grid[xcord][ycord] == 0:
+                    if allowedx == -1 and allowedy == -1:
+                        if redPlaying == True:
+                            grid[xcord][ycord] = 1
+                            redPlaying = False
+                            playcolour = BLUE
+                        else:
+                            grid[xcord][ycord] = 2
+                            redPlaying = True
+                            playcolour = RED
+                        winCalc([xcord,ycord],grid,TotalGrid)
+                        allowedx ,allowedy = NextBox([xcord,ycord],TotalGrid)
+                        ResizePlayBox(playrect,allowedx,allowedy)
+                    elif allowedx <= xcord <= allowedx+2 and allowedy <= ycord <= allowedy+2:
+                        if redPlaying == True:
+                            grid[xcord][ycord] = 1
+                            redPlaying = False
+                            playcolour = BLUE
+                        else:
+                            grid[xcord][ycord] = 2
+                            redPlaying = True
+                            playcolour = RED
+                        winCalc([xcord,ycord],grid,TotalGrid)
+                        allowedx ,allowedy = NextBox([xcord,ycord],TotalGrid)
+                        ResizePlayBox(playrect,allowedx,allowedy)
+
+
+
+    # Set the screen background
+    screen.fill(BLACK)
+
+    # Draw the grid
+    extramarginx = 0
+    extramarginy = 0
+    for row in range(amtrow):
+        if row%3 == 0:
+            extramarginy = extramarginy +MARGIN
+        for column in range(amtcol):
+            color = WHITE
+            if column%3 == 0:
+                extramarginx = extramarginx + MARGIN
+            if grid[column][row] == 1:
+                color = RED
+            if grid[column][row] == 2:
+                color = BLUE
+            pygame.draw.rect(screen,
+                             color,
+                             [((MARGIN + WIDTH) * column) + MARGIN + extramarginx,
+                              ((MARGIN + HEIGHT) * row) + MARGIN+ extramarginy,
+                              WIDTH,
+                              HEIGHT])
+
+            pygame.draw.rect(screen, playcolour, playrect,playwidth)
+        extramarginx =0
+
+    clock.tick(60)
+
+    pygame.display.flip()
+
+pygame.quit()
