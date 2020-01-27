@@ -110,8 +110,9 @@ def winCalc(OuterCords,Grid,TotalGrid):
     if thisTileTeam == 0:
         return "Invaild Team"
     if IC == (0,0):
-        #determines if the win is made in one of the major outside boxes
+        #sets the win for small inner cords and what it does to the outer cords
         #it will execute the defined winSetter above
+        #no innner cords clicked yet
         if Grid[OC[0]+1][OC[1]] == thisTileTeam and Grid[OC[0]+2][OC[1]] == thisTileTeam:
             winSetter(OC,thisTileTeam,Grid,TotalGrid)
         elif Grid[OC[0]][OC[1]+1] == thisTileTeam and Grid[OC[0]][OC[1]+2] == thisTileTeam:
@@ -119,7 +120,7 @@ def winCalc(OuterCords,Grid,TotalGrid):
         elif Grid[OC[0]+1][OC[1]+1] == thisTileTeam and Grid[OC[0]+2][OC[1]+2] == thisTileTeam:
             winSetter(OC,thisTileTeam,Grid,TotalGrid)
     elif IC == (1,0):
-        #similar to what's above except this is in reference to the small boxes
+        #once inner cord clicked and so on
         if Grid[OC[0]+1][OC[1]] == thisTileTeam and Grid[OC[0]-1][OC[1]] == thisTileTeam:
             winSetter(OC,thisTileTeam,Grid,TotalGrid)
         elif Grid[OC[0]][OC[1]+1] == thisTileTeam and Grid[OC[0]][OC[1]+2] == thisTileTeam:
@@ -207,6 +208,7 @@ screen = pygame.display.set_mode(WINDOW_SIZE)
 #title of game
 pygame.display.set_caption("Ulimate Tic tac toe")
 
+#setting the inner cords 
 allowedx = -1
 allowedy = -1
 playablex = MARGIN
@@ -267,7 +269,7 @@ while not done:
     # Set the screen background
     screen.fill(BLACK)
 
-    # Draw the grid
+    # Draw the small grid margin lines with the color
     extramarginx = 0
     extramarginy = 0
     for row in range(amtrow):
